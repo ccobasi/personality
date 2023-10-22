@@ -1,8 +1,9 @@
 <script setup>
-
+import NavBar from '../src/components/NavBar.vue';
 </script>
 
 <template>
+  <NavBar />
 
   <body>
 
@@ -17,8 +18,8 @@
   font-family: 'Montserrat', sans-serif;
 }
 body {
-  background: #271c36;
-  color: #fff;
+  background: var(--Grey-Light, #eee);
+  color: #000;
   height: 100vh;
 }
 </style>
