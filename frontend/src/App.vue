@@ -1,12 +1,15 @@
 <script setup>
 import NavBar from '../src/components/NavBar.vue';
+import QuizView from '../src/components/QuizView.vue'
+
+
 </script>
 
 <template>
   <NavBar />
 
   <body>
-
+    <QuizView />
   </body>
 </template>
 
@@ -21,5 +24,6 @@ body {
   background: var(--Grey-Light, #eee);
   color: #000;
   height: 100vh;
+  padding: 30px 250px;
 }
 </style>
