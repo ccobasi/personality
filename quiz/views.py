@@ -3,6 +3,12 @@ from rest_framework import generics
 from rest_framework.response import Response
 from .serializers import *
 from rest_framework.views import APIView
+from rest_framework import viewsets
+
+
+class QuizViewSet(viewsets.ModelViewSet):
+    queryset = Question.objects.all()
+    serializer_class = QuestionSerializer
 
 class Quiz(generics.ListAPIView):
     serializer_class = QuizSerializer
