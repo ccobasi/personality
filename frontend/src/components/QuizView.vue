@@ -17,25 +17,82 @@ const getQuiz = () => {
     (response) => {
       console.log(response.data);
       quizzes.value = response.data;
+      console.log(quizzes);
     }
   ).catch(error => {
     console.log(error);
   });
 };
+getQuiz()
+const quizCompleted = ref(false)
+const currentQuestion = ref(0)
+const score = ref(0)
 
+
+const getCurrentQuestion = computed(() => {
+  const index = currentQuestion.value;
+  if (index >= 0 && index < quizzes.value.length) {
+    let question = quizzes.value[index];
+    console.log(question);
+    question.index = index;
+    return question;
+  } else {
+    return null; 
+  }
+});
+
+
+
+const SetAnswer = (e) => {
+	quizzes.value[currentQuestion.value].selected = e.target.value
+	e.target.value = null
+}
+
+const NextQuestion = () => {
+	if (currentQuestion.value < quizzes.value.length - 1) {
+		currentQuestion.value++
+		return
+	}
+	
+	quizCompleted.value = true
+}
 const nextQuestion = () => {
+  if (currentIndex.value < quizzes.value.length - 1) {
+    currentIndex.value++;
+    return
+  }
+  quizCompleted.value = true
+};
+
+const threshold = 4; 
+
+
+const selectAnswer = () => {
+  const currentQuestion = quizzes.value[currentIndex.value];
+
+  if (currentQuestion.selected !== null) {
+    const selectedAnswer = currentQuestion.selected;
+    const isCorrect = currentQuestion.answer[selectedAnswer].is_introvert;
+
+    if (isCorrect) {
+      score.value += 1;
+    }
+
+    console.log('Current Score:', score.value);
+  }
+
   if (currentIndex.value < quizzes.value.length - 1) {
     currentIndex.value++;
   }
 };
 
-const currentQuestion = computed(() => {
-  return quizzes.value[currentIndex.value];
-});
+const isLastQuestion = computed(() => currentIndex === quizzes.length - 1);
+
 
 onMounted(() => {
   console.log('DOM is rendered');
   getQuiz();
+  console.log(quizzes)
 
 });
 
@@ -44,15 +101,54 @@ onMounted(() => {
 <template>
   <div>
     <h1>Quizzes</h1>
+    <section class="quiz" v-if="!quizCompleted">
+      <div class="quiz-info">
+        <div v-if="getCurrentQuestion">
+          <span class="question">{{ getCurrentQuestion.title }}</span>
+          <p class="opts">
+            <label v-for="(i,index) in getCurrentQuestion.answer" :key="i.id" :class="`option ${
+						getCurrentQuestion.selected == index 
+							? index == getCurrentQuestion.answer.answer_text 
+								? 'is_introvert' 
+								: 'is_extrovert'
+							: ''
+					} ${
+						getCurrentQuestion.selected != null &&
+						index != getCurrentQuestion.selected
+							? 'disabled'
+							: ''
+					}`">
+              <input type="radio" :id="'i' + index" :name="'question' + getCurrentQuestion.index" :value="index" v-model="getCurrentQuestion.selected" @change="selectAnswer" />
 
-    <div v-if="currentQuestion">
-      <h2>{{ currentQuestion.title }}</h2>
-      <p>{{ currentQuestion.answer }}</p>
-    </div>
-    <button @click="nextQuestion" :disabled="currentIndex === quizzes.length - 1">
-      Next Question
-    </button>
+              {{index + 1}}{{ i.answer_text }}
+
+            </label>
+          </p>
+        </div>
+        <div class=" options">
+
+        </div>
+      </div>
+
+      <button @click="NextQuestion" :disabled="!getCurrentQuestion || getCurrentQuestion.selected === null">
+        {{ 
+          isLastQuestion 
+      ? 'Finish' 
+      : (getCurrentQuestion && getCurrentQuestion.selected === null)
+        ? 'Select an option'
+        : 'Next question'
+      
+				}}
+        Next Question
+      </button>
+    </section>
+    <section v-else>
+      <h2>You have finished the quiz!</h2>
+      <h2>Total Score: {{ score }}</h2>
+      <p>Person is {{ score >= threshold ? 'Introverted' : 'Extroverted' }}</p>
+    </section>
   </div>
+
 </template>
 <style scoped>
 body {
@@ -174,5 +270,8 @@ p {
   color: #8f8f8f;
   font-size: 1.5rem;
   text-align: center;
+}
+.opts {
+  text-align: left;
 }
 </style>

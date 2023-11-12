@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, searchForWorkspaceRoot } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
@@ -7,7 +7,8 @@ export default defineConfig({
   vite: {
         server: {
             fs: {
-                allow: ["C:/Users/hp/Documents/node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf"]
+                allow: [// search up for workspace root
+        searchForWorkspaceRoot(process.cwd()),"C:/Users/hp/Documents/node_modules/@mdi/font/fonts/materialdesignicons-webfont.ttf"]
             }
         }
     }
