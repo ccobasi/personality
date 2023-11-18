@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils';
-import QuizComponent from './QuizComponent.vue';
+import QuizView from '../components/QuizView.vue';
 
-describe('QuizComponent', () => {
+describe('QuizView', () => {
   it('renders correctly', async () => {
-    const wrapper = mount(QuizComponent);
+    const wrapper = mount(QuizView);
 
     // Add your test assertions here
 
@@ -12,7 +12,7 @@ describe('QuizComponent', () => {
   });
 
   it('emits correct events when interacting with the component', async () => {
-    const wrapper = mount(QuizComponent);
+    const wrapper = mount(QuizView);
 
     // Simulate user interactions and check if the expected events are emitted
 
