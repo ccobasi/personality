@@ -15,9 +15,9 @@ const currentIndex = ref(0);
 const getQuiz = () => {
   axios.get(api + 'quiz/', quizzes).then(
     (response) => {
-      console.log(response.data);
+      // console.log(response.data);
       quizzes.value = response.data;
-      console.log(quizzes);
+      // console.log(quizzes);
     }
   ).catch(error => {
     console.log(error);
@@ -33,7 +33,7 @@ const getCurrentQuestion = computed(() => {
   const index = currentQuestion.value;
   if (index >= 0 && index < quizzes.value.length) {
     let question = quizzes.value[index];
-    console.log(question);
+    // console.log(question);
     question.index = index;
     return question;
   } else {
