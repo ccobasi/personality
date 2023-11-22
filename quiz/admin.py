@@ -5,6 +5,7 @@ from .models import *
 @admin.register(Category)
 class CatAdmin(admin.ModelAdmin):
     list_display = [
+        'id',
         'name',
     ]
 
@@ -33,6 +34,7 @@ class QuestionAdmin(admin.ModelAdmin):
         'quiz',
     ]
     list_display = [
+        'id',
         'title',
         'quiz',
         
