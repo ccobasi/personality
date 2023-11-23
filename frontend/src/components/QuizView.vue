@@ -15,15 +15,20 @@ const currentIndex = ref(0);
 const getQuiz = () => {
   axios.get(api + 'quiz/', quizzes).then(
     (response) => {
-      // console.log(response.data);
       quizzes.value = response.data;
-      // console.log(quizzes);
     }
   ).catch(error => {
     console.log(error);
   });
 };
-getQuiz()
+
+onMounted(() => {
+  console.log('DOM is rendered');
+  getQuiz();
+  console.log(quizzes)
+
+});
+
 const quizCompleted = ref(false)
 const currentQuestion = ref(0)
 const score = ref(0)
@@ -33,7 +38,6 @@ const getCurrentQuestion = computed(() => {
   const index = currentQuestion.value;
   if (index >= 0 && index < quizzes.value.length) {
     let question = quizzes.value[index];
-    // console.log(question);
     question.index = index;
     return question;
   } else {
@@ -89,12 +93,7 @@ const selectAnswer = () => {
 const isLastQuestion = computed(() => currentIndex === quizzes.length - 1);
 
 
-onMounted(() => {
-  console.log('DOM is rendered');
-  getQuiz();
-  console.log(quizzes)
 
-});
 
 </script>
 
